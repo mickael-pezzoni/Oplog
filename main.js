@@ -7,16 +7,9 @@ const MEMBERS = [
   {host: HOST, port: '6414'},
   {host: HOST, port: '6416'},
   {host: HOST, port: '6413'}
-]
+].map(_member => _member.host + ':' + _member.port).join(',');
 
-const MEMBERS_STR = MEMBERS.map(_member => _member.host + ':' + _member.port).join(',');
-console.log(`mongodb://${USER}:${PWD}@${MEMBERS_STR}/local?authSource=admin&replicaSet=rs0`);
-
-const oplog = MongoOplog(`mongodb://${USER}:${PWD}@${MEMBERS_STR}/local?authSource=admin&replicaSet=rs0` , 'Cefirc');
-
-
-// const oplog = MongoOplog(`mongodb://${USER}:${PWD}@${MEMBERS[0].host}:${MEMBERS[1].port}/local?authSource=admin` , 'Cefirc');
-// const oplog = MongoOplog('mongodb://***REMOVED***:6413/local','Cefirc')
+const oplog = MongoOplog(`mongodb://${USER}:${PWD}@${MEMBERS}/local?authSource=admin&replicaSet=rs0` , 'Cefirc');
 
 oplog.tail();
 
