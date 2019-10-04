@@ -1,6 +1,11 @@
 const MongoOplog = require('mongo-oplog');
 const notifier = require('node-notifier');
-const beep = require('beepbeep')
+const beep = require('beepbeep');
+const app = require('express')();
+const Socket = require('./Socket');
+const server = app.listen(3000);
+
+const io = require('socket.io')(server, { origins: '*:*'});
 
 const USER = 'oplogger';
 const PWD = '***REMOVED***';
@@ -14,6 +19,13 @@ const MEMBERS = [
 
 const oplog = MongoOplog(`mongodb://${USER}:${PWD}@${MEMBERS}/local?authSource=admin&replicaSet=rs0` , 'MellispheraTest');
 
+let socketClient =  [];
+
+io.on('connect', (socket) => {
+  console.log(socket);
+  socketClient.push(new Socket(socket));
+});
+
 oplog.tail();
 
 oplog.on('op', data => {
@@ -21,7 +33,10 @@ oplog.on('op', data => {
 });
 
 oplog.on('insert', doc => {
-  console.log(doc);
+  if (socketClient.length > 0) {
+    console.log(socketClient);
+    socketClient[0].getSocket().broadcast.emit('test', {value: doc});
+  }
   beep(3);
   notifier.notify({
     title: 'Alert',
@@ -49,3 +64,4 @@ oplog.on('end', () => {
 oplog.stop(() => {
   console.log('server stopped');
 });
+
