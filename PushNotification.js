@@ -11,12 +11,11 @@ const CONFIG_API = {
 module.exports = function PushNotification() {
     this.xhr = new XMLHttpRequest();
 
-    this.xhr.open('POST', CONFIG_API.URL);
-    CONFIG_API.HEADERS.forEach(_elt => {
-        this.xhr.setRequestHeader(_elt.key, _elt.value);
-    });
-
     this.sendNotif = () => {
+        this.xhr.open('POST', CONFIG_API.URL);
+        CONFIG_API.HEADERS.forEach(_elt => {
+            this.xhr.setRequestHeader(_elt.key, _elt.value);
+        });
         const body = {
             app_id : CONFIG_API.APP_ID,
             included_segments: ["Active Users"],
