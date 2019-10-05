@@ -13,7 +13,7 @@ module.exports = function PushNotification() {
 
     this.xhr.open('POST', CONFIG_API.URL);
     CONFIG_API.HEADERS.forEach(_elt => {
-        this.xhr.setHeaders(_elt.key, _elt.value);
+        this.xhr.setRequestHeader(_elt.key, _elt.value);
     });
 
     this.sendNotif = () => {
