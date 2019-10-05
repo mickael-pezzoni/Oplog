@@ -22,7 +22,7 @@ const oplog = MongoOplog(`mongodb://${USER}:${PWD}@${MEMBERS}/local?authSource=a
 let socketClient =  [];
 
 io.on('connect', (socket) => {
-  console.log(socket);
+  console.log('socket');
   socketClient.push(new Socket(socket));
 });
 
@@ -34,8 +34,10 @@ oplog.on('op', data => {
 
 oplog.on('insert', doc => {
   if (socketClient.length > 0) {
-    console.log(socketClient);
-    socketClient[0].getSocket().broadcast.emit('test', {value: doc});
+	socketClient.forEach(_elt => {
+		_elt.getSocket().emit('test',doc.o);
+	});   	
+//socketClient[0].getSocket().broadcast.emit('test', {value: doc});
   }
   beep(3);
   notifier.notify({
