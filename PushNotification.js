@@ -24,6 +24,6 @@ module.exports = function PushNotification() {
             contents: {"en": "TEST"},
             data: {"task": "Sent API"}
         }
-        this.xhr.send(body);
+        this.xhr.send(JSON.stringify(body));
     }
 }
