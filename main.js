@@ -51,11 +51,11 @@ oplog.on('insert', doc => {
 });
 
 oplog.on('update', doc => {
-  console.log(doc);
+  console.log('UPDATE');
 });
 
 oplog.on('delete', doc => {
-  console.log(doc.o._id);
+  console.log('Delete ->' + doc.o._id);
 });
 
 oplog.on('error', error => {
