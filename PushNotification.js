@@ -11,7 +11,7 @@ const CONFIG_API = {
 module.exports = function PushNotification() {
     this.xhr = new XMLHttpRequest();
 
-    this.sendNotif = () => {
+    this.sendNotif = (doc) => {
         this.xhr.open('POST', CONFIG_API.URL);
         CONFIG_API.HEADERS.forEach(_elt => {
             this.xhr.setRequestHeader(_elt.key, _elt.value);
@@ -20,9 +20,12 @@ module.exports = function PushNotification() {
             app_id : CONFIG_API.APP_ID,
             included_segments: ["Active Users"],
             heading: {"en": "My Notif"},
-            contents: {"en": "TEST"},
+            contents: {"en": doc},
             data: {"task": "Sent API"}
         }
         this.xhr.send(JSON.stringify(body));
+        this.xhr.onreadystatechange = () => {
+            console.log(this.xhr.state);
+        }
     }
 }
