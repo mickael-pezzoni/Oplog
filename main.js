@@ -37,7 +37,7 @@ oplog.on('insert', doc => {
   if (socketClient.length > 0) {
     senderNotif.sendNotif();
     socketClient.forEach(_elt => {
-      _elt.getSocket().emit('test', doc.o);
+      _elt.getSocket().emit('test', JSON.stringify(doc.o));
     });
     //socketClient[0].getSocket().broadcast.emit('test', {value: doc});
   }

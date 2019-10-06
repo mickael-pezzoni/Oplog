@@ -26,7 +26,7 @@ module.exports = function PushNotification() {
         this.xhr.send(JSON.stringify(body));
         this.xhr.onreadystatechange = () => {
             console.log(this.xhr.readyState);
-            console.log(this.xhr.status);
+            console.log(this.xhr.status + '->' + this.xhr.statusText);
         }
     }
 }
