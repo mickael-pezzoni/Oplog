@@ -4,7 +4,8 @@ const CONFIG_API = {
     URL: 'https://onesignal.com/api/v1/notifications',
     HEADERS: [
         {key: 'Content-Type', value: 'application/json'},
-        {key: 'Authorization', value: 'Basic MjBmODJkZTktYjQ4ZS00ZTJiLTk1ZmUtZTc0MWRhYmVmYjQ3'}
+        {key: 'Authorization', value: 'Basic MjBmODJkZTktYjQ4ZS00ZTJiLTk1ZmUtZTc0MWRhYmVmYjQ3'},
+        {key: 'gzip', value: 'true'}
     ],
     APP_ID: 'f1ea11f1-66ab-4222-af16-05dda7a19d32'
 }

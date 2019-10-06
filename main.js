@@ -23,7 +23,7 @@ let socketClient = [];
 
 let senderNotif = new PushNotification();
 io.on('connect', (socket) => {
-  console.log('socket');
+  console.log('connect');
   socketClient.push(new Socket(socket));
 });
 
@@ -38,7 +38,7 @@ oplog.on('insert', doc => {
   if (socketClient.length > 0) {
     senderNotif.sendNotif(JSON.stringify(doc.o));
     socketClient.forEach(_elt => {
-      _elt.getSocket().emit('test', JSON.stringify(doc.o));
+      _elt.getSocket().emit('insert', JSON.stringify(doc.o));
     });
     //socketClient[0].getSocket().broadcast.emit('test', {value: doc});
   }
