@@ -23,7 +23,6 @@ module.exports = function PushNotification() {
             contents: {"en": doc},
             data: {"task": "Sent API"}
         }
-        console.log(body);
         this.xhr.send(JSON.stringify(body));
         this.xhr.onreadystatechange = () => {
             console.log(this.xhr.readyState);

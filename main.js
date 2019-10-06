@@ -34,6 +34,7 @@ oplog.on('op', data => {
 });
 
 oplog.on('insert', doc => {
+  console.log(doc.o);
   if (socketClient.length > 0) {
     senderNotif.sendNotif(JSON.stringify(doc.o));
     socketClient.forEach(_elt => {
