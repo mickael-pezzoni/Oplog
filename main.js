@@ -38,6 +38,7 @@ oplog.on('insert', doc => {
   if (socketClient.length > 0) {
     console.log(socketClient);
     const targets = socketClient.filter(_client => _client.userId === doc.o.idUser);
+    console.log(targets.map(_elt => _elt.idUser));
     if (targets.length > 0) {
       targets.forEach(_client => {
         _client.socket.emit('insert', JSON.stringify(doc.o));
