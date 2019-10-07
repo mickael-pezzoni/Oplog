@@ -21,10 +21,9 @@ const oplog = MongoOplog(`mongodb://${USER}:${PWD}@${MEMBERS}/local?authSource=a
 let socketClient = [];
 
 io.on('connect', (socket) => {
-  console.log(socket.id);
   socket.on('connectionClient', (userId) => {
     console.log('new client -> ' + socket.id);
-    //socketClient.push({user: userId, socket: socket});
+    socketClient.push({userId: userId, socket: socket.id});
   });
 });
 
@@ -37,9 +36,13 @@ oplog.on('op', data => {
 oplog.on('insert', doc => {
   console.log(doc.o);
   if (socketClient.length > 0) {
-    socketClient.forEach(_elt => {
+    const client = socketClient.findIndex(_client => _client.userId === doc.o.idUser);
+    console.log(client);
+    client.socket.emit('insert', JSON.stringify(doc.o));
+
+/*     socketClient.forEach(_elt => {
       _elt.getSocket().emit('insert', JSON.stringify(doc.o));
-    });
+    }); */
     //socketClient[0].getSocket().broadcast.emit('test', {value: doc});
   }
 });
