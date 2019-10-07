@@ -23,7 +23,7 @@ let socketClient = [];
 io.on('connect', (socket) => {
   console.log(socket.id);
   socket.on('connectionClient', (userId) => {
-    console.log(socket);
+    console.log('new client -> ' + socket.id);
     //socketClient.push({user: userId, socket: socket});
   });
 });
