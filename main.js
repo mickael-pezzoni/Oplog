@@ -4,7 +4,6 @@ const beep = require('beepbeep');
 const app = require('express')();
 const Socket = require('./Socket');
 const server = app.listen(3000);
-const PushNotification = require('./PushNotification');
 const io = require('socket.io')(server, { origins: '*:*' });
 
 const USER = 'oplogger';
@@ -21,10 +20,11 @@ const oplog = MongoOplog(`mongodb://${USER}:${PWD}@${MEMBERS}/local?authSource=a
 
 let socketClient = [];
 
-let senderNotif = new PushNotification();
 io.on('connect', (socket) => {
   console.log('connect');
-  socketClient.push(new Socket(socket));
+  socket.on('connectionClient', (userId) => {
+    //socketClient.push({user: userId, socket: socket});
+  });
 });
 
 oplog.tail();
@@ -36,18 +36,11 @@ oplog.on('op', data => {
 oplog.on('insert', doc => {
   console.log(doc.o);
   if (socketClient.length > 0) {
-    senderNotif.sendNotif(JSON.stringify(doc.o));
     socketClient.forEach(_elt => {
       _elt.getSocket().emit('insert', JSON.stringify(doc.o));
     });
     //socketClient[0].getSocket().broadcast.emit('test', {value: doc});
   }
-  beep(3);
-  notifier.notify({
-    title: 'Alert',
-    message: JSON.stringify(doc.o),
-    sound: true, // Only Notification Center or Windows Toasters
-  });
 });
 
 oplog.on('update', doc => {
