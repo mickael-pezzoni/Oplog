@@ -36,7 +36,7 @@ oplog.on('op', data => {
 oplog.on('insert', doc => {
   console.log(doc.o);
   if (socketClient.length > 0) {
-    consoleLog(socketClient);
+    console.log(socketClient);
     const client = socketClient.findIndex(_client => _client.userId === doc.o.idUser);
     console.log(client);
     if (socket.id === client.socketId) {
