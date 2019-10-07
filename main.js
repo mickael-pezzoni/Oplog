@@ -37,15 +37,12 @@ oplog.on('insert', doc => {
   console.log(doc.o);
   if (socketClient.length > 0) {
     console.log(socketClient);
-    const index = socketClient.findIndex(_client => _client.userId === doc.o.idUser);
-    if (index !== -1) {
-      socketClient[index].socket.emit('insert', JSON.stringify(doc.o));
+    const targets = socketClient.filter(_client => _client.userId === doc.o.idUser);
+    if (targets.length > 0) {
+      targets.forEach(_client => {
+        _client.socket.emit('insert', JSON.stringify(doc.o));
+      })
     }
-
-/*     socketClient.forEach(_elt => {
-      _elt.getSocket().emit('insert', JSON.stringify(doc.o));
-    }); */
-    //socketClient[0].getSocket().broadcast.emit('test', {value: doc});
   }
 });
 
