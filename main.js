@@ -40,7 +40,7 @@ oplog.on('insert', doc => {
     const client = socketClient.findIndex(_client => _client.userId === doc.o.idUser);
     console.log(client);
     if (socket.id === client.socketId) {
-      client.socket.emit('insert', JSON.stringify(doc.o));
+      socket.emit('insert', JSON.stringify(doc.o));
     }
 
 /*     socketClient.forEach(_elt => {
