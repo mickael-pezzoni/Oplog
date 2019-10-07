@@ -23,7 +23,7 @@ let socketClient = [];
 io.on('connect', (socket) => {
   socket.on('connectionClient', (userId) => {
     console.log('new client -> ' + socket.id);
-    socketClient.push({userId: userId, socket: socket.id});
+    socketClient.push({userId: userId, socketId: socket.id});
   });
 });
 
@@ -36,9 +36,12 @@ oplog.on('op', data => {
 oplog.on('insert', doc => {
   console.log(doc.o);
   if (socketClient.length > 0) {
+    consoleLog(socketClient);
     const client = socketClient.findIndex(_client => _client.userId === doc.o.idUser);
     console.log(client);
-    client.socket.emit('insert', JSON.stringify(doc.o));
+    if (socket.id === client.socketId) {
+      client.socket.emit('insert', JSON.stringify(doc.o));
+    }
 
 /*     socketClient.forEach(_elt => {
       _elt.getSocket().emit('insert', JSON.stringify(doc.o));
