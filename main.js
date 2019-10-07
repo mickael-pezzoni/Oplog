@@ -36,10 +36,10 @@ oplog.on('op', data => {
 oplog.on('insert', doc => {
   console.log(doc.o);
   if (socketClient.length > 0) {
-    const client = socketClient.findIndex(_client => _client.userId === doc.o.idUser);
-    console.log(client);
-    if (client !== -1) {
-      client.socket.emit('insert', JSON.stringify(doc.o));
+    console.log(socketClient);
+    const index = socketClient.findIndex(_client => _client.userId === doc.o.idUser);
+    if (index !== -1) {
+      socketClient[index].socket.emit('insert', JSON.stringify(doc.o));
     }
 
 /*     socketClient.forEach(_elt => {
