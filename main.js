@@ -21,6 +21,7 @@ const oplog = MongoOplog(`mongodb://${USER}:${PWD}@${MEMBERS}/local?authSource=a
 let socketClient = [];
 
 io.on('connect', (socket) => {
+  console.log('connection');
   socket.on('connectionClient', (userId) => {
     console.log('new client -> ' + socket.id);
     socketClient.push({userId: userId, socket: socket});
@@ -34,14 +35,12 @@ oplog.on('op', data => {
 });
 
 oplog.on('insert', doc => {
-  console.log(doc.o);
   if (socketClient.length > 0) {
-    console.log(socketClient);
     const targets = socketClient.filter(_client => _client.userId === doc.o.idUser);
-    console.log(targets.map(_elt => _elt.client));
+    console.log('Send to => ' + targets.map(_elt => _elt.userId));
     if (targets.length > 0) {
       targets.forEach(_client => {
-        _client.socket.emit('insert', JSON.stringify(doc.o));
+        _client.socket.emit('insert', doc.o);
       })
     }
   }
