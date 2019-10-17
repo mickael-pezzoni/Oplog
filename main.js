@@ -21,7 +21,6 @@ const oplog = MongoOplog(`mongodb://${USER}:${PWD}@${MEMBERS}/local?authSource=a
 let socketClient = [];
 
 io.on('connect', (socket) => {
-  console.log('connection');
   socket.on('connectionClient', (userId) => {
     console.log('new client -> ' + socket.id);
     socketClient.push({userId: userId, socket: socket});
@@ -29,7 +28,6 @@ io.on('connect', (socket) => {
 });
 
 oplog.tail();
-
 oplog.on('op', data => {
   //  console.log(data);
 });
