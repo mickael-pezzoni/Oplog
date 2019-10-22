@@ -40,9 +40,10 @@ oplog.on('op', data => {
 oplog.on('insert', doc => {
   if (socketClient.length > 0) {
     const targets = socketClient.filter(_client => _client.userId === doc.o.idUser);
-    const admin = socketClient.filter(_client => _client.role.indexOf('ADMIN') !== -1);
+    const admin = socketClient.filter(_client => _client.role.indexOf('ROLE_ADMIN') !== -1);
     console.log('Send to => ' + targets.map(_elt => _elt.userId));
     console.log(targets.concat(admin));
+    console.log(admin);
     if (targets.length > 0) {
       targets.concat(admin).forEach(_client => {
         _client.socket.emit('insert', doc.o);
