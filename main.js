@@ -7,8 +7,8 @@ const server = app.listen(3000);
 const io = require('socket.io')(server, { origins: '*:*' });
 
 const USER = 'oplogger';
-const PWD = '***REMOVED***';
-const HOST = '***REMOVED***';
+const PWD = '';
+const HOST = '';
 
 const MEMBERS = [
   { host: HOST, port: '6414' },
